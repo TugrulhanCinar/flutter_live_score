@@ -12,11 +12,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   LiveScore _liveScore;
   Match _currentMatch;
+  Color color;
+  var status="";
   final scroolController = ScrollController();
   final _titleText = "Live Score";
   Maclar _currentMaclar;
-  final socetURL = "";
-  final _socet = IOWebSocketChannel.connect(socetURL);
+
+  //final socetURL = "";
+  final _socet = IOWebSocketChannel.connect("ws://matchesock.herokuapp.com/");
 
   @override
   Widget build(BuildContext context) {
@@ -91,39 +94,56 @@ class _HomePageState extends State<HomePage> {
         },
       );
 
-
   ListTile get macCardWidget => ListTile(
       title: _macCardWidgetTitle, subtitle: _subtitleText(_currentMaclar.kick));
 
-  Widget get _macCardWidgetTitle => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 15,
-            child: _text(_currentMaclar.status),
-          ),
-          Expanded(
-            flex: 30,
-            child: _text(_currentMaclar.home),
-          ),
-          Expanded(
-            flex: 15,
-            child: _text(_currentMaclar.score),
-          ),
-          Expanded(
-            flex: 30,
-            child: _text(_currentMaclar.away),
-          ),
-          Expanded(
-            flex: 10,
-            child: _subtitleText(_currentMaclar.halftime),
-          ),
-        ],
-      );
+  Widget get _macCardWidgetTitle {
+    color = Colors.red;
+     status = _currentMaclar.status;
+    if (status == "MS" || status == "ERT" || status == "Pen" || status == "") {
+      color = Colors.black;
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          flex: 15,
+          child: _text(_currentMaclar.status, color),
+          /* child: Text(
+            _currentMaclar.status,
+            style: context.theme.textTheme.bodyText1.copyWith(
+                color: color,
+            ),
+            textAlign: TextAlign.center,
+          ),*/
+        ),
+        Expanded(
+          flex: 30,
+          child: _text(_currentMaclar.home, Colors.black),
+        ),
+        Expanded(
+          flex: 15,
+          child: _text(_currentMaclar.score, color),
+        ),
+        Expanded(
+          flex: 30,
+          child: _text(_currentMaclar.away, Colors.black),
+        ),
+        Expanded(
+          flex: 10,
+          child: _subtitleText(_currentMaclar.halftime),
+        ),
+      ],
+    );
+  }
 
   Widget _subtitleText(String text) =>
       Text(text, style: context.theme.textTheme.bodyText2);
 
-  Widget _text(String text) => Text(text,
-      style: context.theme.textTheme.bodyText1, textAlign: TextAlign.center);
+  Widget _text(String text, Color currentColor) => Text(
+         text,
+        style: context.theme.textTheme.bodyText1.copyWith(color: currentColor),
+        textAlign: TextAlign.center,
+      );
 }

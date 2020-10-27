@@ -64,14 +64,35 @@ class Maclar {
   String away;
   String halftime;
 
-  factory Maclar.fromJson(Map<String, dynamic> json) => Maclar(
-    kick: json["kick"] == null ? "null" : json["kick"],
-    status: json["status"] == null ? "null" : json["status"],
-    score: json["score"] == null ? "null" : json["score"],
-    home: json["home"] == null ? "null" : json["home"],
-    away: json["away"] == null ? "null" : json["away"],
-    halftime: json["halftime"] == null ? "null" : json["halftime"],
-  );
+  
+
+  factory Maclar.fromJson(Map<String, dynamic> json) {
+
+    String status ="";
+    if(json["status"]=="FT"){
+      status = "MS";
+    }else if(json["status"]=="Pst"){
+      status ="ERT";
+    }else if(json["status"]=="AP"){
+      status = "Pen";
+    }else if(json["status"]=="Hf"){
+      status = "İY";
+    }else if(json["status"]=="AP"){
+      status = "Pen";
+    }else{
+      status = json["status"];
+    }
+
+    return Maclar(
+      kick: json["kick"] == null ? "null" : json["kick"],
+      status: json["status"] == null ? "null" : status,
+      //status: json["status"] == null ? "null" : json["status"],
+      score: json["score"] == null ? "null" : json["score"],
+      home: json["home"] == null ? "null" : json["home"],
+      away: json["away"] == null ? "null" : json["away"],
+      halftime: json["halftime"] == null ? "null" : json["halftime"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "kick": kick == null ? null : kick,
@@ -82,6 +103,3 @@ class Maclar {
     "halftime": halftime == null ? null : halftime,
   };
 }
-/*
-score: "1-0",
- */
