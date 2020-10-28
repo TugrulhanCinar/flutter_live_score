@@ -15,6 +15,7 @@ class LiveScoreApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         textTheme: TextTheme().copyWith(
           headline1: _headline1,
+          headline6: _headline6,
           bodyText1: _bodyText1,
           bodyText2: _bodyText2,
           subtitle1: _subTitle1,
@@ -49,4 +50,10 @@ class LiveScoreApp extends StatelessWidget {
         color: Colors.white,
         fontStyle: FontStyle.italic,
       );
+
+  TextStyle get _headline6 => TextStyle(
+    fontSize: 18,
+    color: Colors.black,
+    fontStyle: FontStyle.italic,
+  );
 }
